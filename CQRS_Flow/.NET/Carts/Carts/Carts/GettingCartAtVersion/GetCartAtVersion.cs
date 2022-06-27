@@ -11,14 +11,14 @@ namespace Carts.Carts.GettingCartAtVersion;
 
 public class GetCartAtVersion
 {
-    public Guid CartId { get; }
-    public ulong Version { get; }
-
     private GetCartAtVersion(Guid cartId, ulong version)
     {
         CartId = cartId;
         Version = version;
     }
+
+    public Guid CartId { get; }
+    public ulong Version { get; }
 
     public static GetCartAtVersion Create(Guid cartId, ulong version)
     {
@@ -29,7 +29,7 @@ public class GetCartAtVersion
     }
 }
 
-internal class HandleGetCartAtVersion :
+internal class HandleGetCartAtVersion:
     IQueryHandler<GetCartAtVersion, CartDetails>
 {
     private readonly EventStoreClient eventStore;

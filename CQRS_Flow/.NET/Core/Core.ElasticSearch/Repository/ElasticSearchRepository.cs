@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.ElasticSearch.Indices;
@@ -30,12 +31,14 @@ public class ElasticSearchRepository<T>: Repositories.IRepository<T> where T : c
 
     public Task Add(T aggregate, CancellationToken cancellationToken)
     {
-        return elasticClient.IndexAsync(aggregate, i => i.Id(aggregate.Id).Index(IndexNameMapper.ToIndexName<T>()), cancellationToken);
+        return elasticClient.IndexAsync(aggregate, i => i.Id(aggregate.Id).Index(IndexNameMapper.ToIndexName<T>()),
+            cancellationToken);
     }
 
     public Task Update(T aggregate, CancellationToken cancellationToken)
     {
-        return elasticClient.UpdateAsync<T>(aggregate.Id, i => i.Doc(aggregate).Index(IndexNameMapper.ToIndexName<T>()), cancellationToken);
+        return elasticClient.UpdateAsync<T>(aggregate.Id, i => i.Doc(aggregate).Index(IndexNameMapper.ToIndexName<T>()),
+            cancellationToken);
     }
 
     public Task Delete(T aggregate, CancellationToken cancellationToken)

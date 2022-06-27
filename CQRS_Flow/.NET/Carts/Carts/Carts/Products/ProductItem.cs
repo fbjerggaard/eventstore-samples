@@ -4,15 +4,15 @@ namespace Carts.Carts.Products;
 
 public class ProductItem
 {
-    public Guid ProductId { get; }
-
-    public int Quantity { get; }
-
     public ProductItem(Guid productId, int quantity)
     {
         ProductId = productId;
         Quantity = quantity;
     }
+
+    public Guid ProductId { get; }
+
+    public int Quantity { get; }
 
     public static ProductItem Create(Guid? productId, int? quantity)
     {
@@ -62,7 +62,7 @@ public class ProductItem
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        return obj.GetType() == GetType() && Equals((ProductItem) obj);
+        return obj.GetType() == GetType() && Equals((ProductItem)obj);
     }
 
     private bool Equals(ProductItem other)

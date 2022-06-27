@@ -7,8 +7,10 @@ namespace Core.EventStoreDB.Serialization;
 
 public static class EventStoreDBSerializer
 {
-    public static T? Deserialize<T>(this ResolvedEvent resolvedEvent) where T : class =>
-        Deserialize(resolvedEvent) as T;
+    public static T? Deserialize<T>(this ResolvedEvent resolvedEvent) where T : class
+    {
+        return Deserialize(resolvedEvent) as T;
+    }
 
     public static object? Deserialize(this ResolvedEvent resolvedEvent)
     {
@@ -21,11 +23,13 @@ public static class EventStoreDBSerializer
             : null;
     }
 
-    public static EventData ToJsonEventData(this object @event) =>
-        new(
+    public static EventData ToJsonEventData(this object @event)
+    {
+        return new(
             Uuid.NewUuid(),
             EventTypeMapper.ToName(@event.GetType()),
             Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(@event)),
             Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { }))
         );
+    }
 }

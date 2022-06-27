@@ -10,14 +10,14 @@ namespace Carts.Carts.GettingCarts;
 
 public class GetCarts
 {
-    public int PageNumber { get; }
-    public int PageSize { get; }
-
     private GetCarts(int pageNumber, int pageSize)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;
     }
+
+    public int PageNumber { get; }
+    public int PageSize { get; }
 
     public static GetCarts Create(int pageNumber = 1, int pageSize = 20)
     {
@@ -30,7 +30,7 @@ public class GetCarts
     }
 }
 
-internal class HandleGetCarts :
+internal class HandleGetCarts:
     IQueryHandler<GetCarts, IReadOnlyList<CartShortInfo>>
 {
     private readonly IElasticClient elasticClient;

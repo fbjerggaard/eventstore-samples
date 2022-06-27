@@ -13,11 +13,10 @@ namespace Carts.Api.Tests.Carts.InitializingCart;
 
 public class InitCartFixture: ApiFixture<Startup>
 {
-    protected override string ApiUrl => "/api/Carts";
-
     public readonly Guid ClientId = Guid.NewGuid();
 
     public HttpResponseMessage CommandResponse = default!;
+    protected override string ApiUrl => "/api/Carts";
 
     public override async Task InitializeAsync()
     {
@@ -55,7 +54,7 @@ public class InitializeCartTests: IClassFixture<InitCartFixture>
 
         //send query
         var queryResponse = await fixture.Get(query, 10,
-            check: response => new(response.StatusCode == HttpStatusCode.OK));
+            check: response => new ValueTask<bool>(response.StatusCode == HttpStatusCode.OK));
         queryResponse.EnsureSuccessStatusCode();
 
         var cartDetails = await queryResponse.GetResultFromJson<CartDetails>();

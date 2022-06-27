@@ -6,22 +6,21 @@ public record EventMetadata(
 
 public class StreamEvent
 {
-    public object Data { get; }
-    public EventMetadata Metadata { get; }
-
     public StreamEvent(object data, EventMetadata metadata)
     {
         Data = data;
         Metadata = metadata;
     }
+
+    public object Data { get; }
+    public EventMetadata Metadata { get; }
 }
 
-public class StreamEvent<T>: StreamEvent where T: notnull
+public class StreamEvent<T>: StreamEvent where T : notnull
 {
-    public new T Data => (T)base.Data;
-
-    public StreamEvent(T data, EventMetadata metadata) : base(data, metadata)
+    public StreamEvent(T data, EventMetadata metadata): base(data, metadata)
     {
     }
-}
 
+    public new T Data => (T)base.Data;
+}

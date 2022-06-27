@@ -14,15 +14,14 @@ namespace Carts.Api.Tests.Carts.AddingProduct;
 
 public class AddProductFixture: ApiFixture<Startup>
 {
-    protected override string ApiUrl => "/api/Carts";
-
-    public Guid ShoppingCartId { get; private set; }
-
     public readonly Guid ClientId = Guid.NewGuid();
 
     public readonly ProductItemRequest ProductItem = new(Guid.NewGuid(), 1);
 
     public HttpResponseMessage CommandResponse = default!;
+    protected override string ApiUrl => "/api/Carts";
+
+    public Guid ShoppingCartId { get; private set; }
 
     public override async Task InitializeAsync()
     {

@@ -10,16 +10,16 @@ namespace Carts.Carts.GettingCartHistory;
 
 public class GetCartHistory
 {
-    public Guid CartId { get; }
-    public int PageNumber { get; }
-    public int PageSize { get; }
-
     private GetCartHistory(Guid cartId, int pageNumber, int pageSize)
     {
         CartId = cartId;
         PageNumber = pageNumber;
         PageSize = pageSize;
     }
+
+    public Guid CartId { get; }
+    public int PageNumber { get; }
+    public int PageSize { get; }
 
     public static GetCartHistory Create(Guid cartId, int pageNumber = 1, int pageSize = 20)
     {

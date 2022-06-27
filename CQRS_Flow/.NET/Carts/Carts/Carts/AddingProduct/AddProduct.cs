@@ -10,15 +10,16 @@ namespace Carts.Carts.AddingProduct;
 
 public class AddProduct
 {
-    public Guid CartId { get; }
-
-    public ProductItem ProductItem { get; }
-
     private AddProduct(Guid cartId, ProductItem productItem)
     {
         CartId = cartId;
         ProductItem = productItem;
     }
+
+    public Guid CartId { get; }
+
+    public ProductItem ProductItem { get; }
+
     public static AddProduct Create(Guid cartId, ProductItem productItem)
     {
         if (cartId == Guid.Empty)

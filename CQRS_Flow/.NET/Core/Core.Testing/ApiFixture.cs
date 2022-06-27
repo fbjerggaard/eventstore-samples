@@ -11,34 +11,48 @@ namespace Core.Testing;
 
 public abstract class ApiFixture<TStartup>: ApiFixture where TStartup : class
 {
-    public override TestContext CreateTestContext() =>
-        new TestContext<TStartup>(GetConfiguration, SetupServices, SetupWebHostBuilder);
+    public override TestContext CreateTestContext()
+    {
+        return new TestContext<TStartup>(GetConfiguration, SetupServices, SetupWebHostBuilder);
+    }
 }
 
 public abstract class ApiFixture: IAsyncLifetime
 {
     protected readonly TestContext Sut;
 
-    private HttpClient Client => Sut.Client;
-
-    protected abstract string ApiUrl { get; }
-
-    protected virtual Dictionary<string, string> GetConfiguration(string fixtureName) => new();
-
-    protected virtual Action<IServiceCollection>? SetupServices => null;
-
-    protected virtual Func<IWebHostBuilder, IWebHostBuilder>? SetupWebHostBuilder => null;
-
     protected ApiFixture()
     {
         Sut = CreateTestContext();
     }
 
-    public virtual TestContext CreateTestContext() => new(GetConfiguration, SetupServices, SetupWebHostBuilder);
+    private HttpClient Client => Sut.Client;
 
-    public virtual Task InitializeAsync() => Task.CompletedTask;
+    protected abstract string ApiUrl { get; }
 
-    public virtual Task DisposeAsync() => Task.CompletedTask;
+    protected virtual Action<IServiceCollection>? SetupServices => null;
+
+    protected virtual Func<IWebHostBuilder, IWebHostBuilder>? SetupWebHostBuilder => null;
+
+    public virtual Task InitializeAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task DisposeAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    protected virtual Dictionary<string, string> GetConfiguration(string fixtureName)
+    {
+        return new();
+    }
+
+    public virtual TestContext CreateTestContext()
+    {
+        return new(GetConfiguration, SetupServices, SetupWebHostBuilder);
+    }
 
     public async Task<HttpResponseMessage> Get(string path = "", int maxNumberOfRetries = 0,
         int retryIntervalInMs = 1000, Func<HttpResponseMessage, ValueTask<bool>>? check = null)
@@ -46,14 +60,14 @@ public abstract class ApiFixture: IAsyncLifetime
         HttpResponseMessage queryResponse;
         var retryCount = maxNumberOfRetries;
 
-        var doCheck = check ?? (response => new(response.StatusCode == HttpStatusCode.OK));
+        var doCheck = check ?? (response => new ValueTask<bool>(response.StatusCode == HttpStatusCode.OK));
         do
         {
             queryResponse = await Client.GetAsync(
                 $"{ApiUrl}/{path}"
             );
 
-            if (retryCount == 0 || (await doCheck(queryResponse)))
+            if (retryCount == 0 || await doCheck(queryResponse))
                 break;
 
             await Task.Delay(retryIntervalInMs);

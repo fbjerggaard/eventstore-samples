@@ -1,17 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
-namespace Core.BackgroundWorkers;
+﻿namespace Core.BackgroundWorkers;
 
 public class BackgroundWorker: IHostedService, IDisposable
 {
-    private Task? executingTask;
-    private CancellationTokenSource? cts;
     private readonly ILogger<BackgroundWorker> logger;
     private readonly Func<CancellationToken, Task> perform;
+    private CancellationTokenSource? cts;
+    private Task? executingTask;
 
     public BackgroundWorker(
         ILogger<BackgroundWorker> logger,
@@ -20,6 +14,11 @@ public class BackgroundWorker: IHostedService, IDisposable
     {
         this.logger = logger;
         this.perform = perform;
+    }
+
+    public void Dispose()
+    {
+        cts?.Dispose();
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -48,10 +47,5 @@ public class BackgroundWorker: IHostedService, IDisposable
         cancellationToken.ThrowIfCancellationRequested();
 
         logger.LogInformation("Background worker stopped");
-    }
-
-    public void Dispose()
-    {
-        cts?.Dispose();
     }
 }

@@ -13,15 +13,15 @@ namespace Core.EventStoreDB.Repository;
 
 public class EventStoreDBRepository<T>: IRepository<T> where T : class, IAggregate
 {
-    private readonly EventStoreClient eventStore;
     private readonly IEventBus eventBus;
+    private readonly EventStoreClient eventStore;
 
     public EventStoreDBRepository(
         EventStoreClient eventStoreDBClient,
         IEventBus eventBus
     )
     {
-        this.eventStore = eventStoreDBClient ?? throw new ArgumentNullException(nameof(eventStoreDBClient));
+        eventStore = eventStoreDBClient ?? throw new ArgumentNullException(nameof(eventStoreDBClient));
         this.eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
     }
 

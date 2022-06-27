@@ -5,15 +5,15 @@ namespace Carts.Carts.AddingProduct;
 
 public class ProductAdded
 {
-    public Guid CartId { get; }
-
-    public PricedProductItem ProductItem { get; }
-
     public ProductAdded(Guid cartId, PricedProductItem productItem)
     {
         CartId = cartId;
         ProductItem = productItem;
     }
+
+    public Guid CartId { get; }
+
+    public PricedProductItem ProductItem { get; }
 
     public static ProductAdded Create(Guid cartId, PricedProductItem productItem)
     {

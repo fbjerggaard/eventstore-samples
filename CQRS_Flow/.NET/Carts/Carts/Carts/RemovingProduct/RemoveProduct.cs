@@ -9,19 +9,19 @@ namespace Carts.Carts.RemovingProduct;
 
 public class RemoveProduct
 {
-    public Guid CartId { get; }
-
-    public PricedProductItem ProductItem { get; }
-
     private RemoveProduct(Guid cardId, PricedProductItem productItem)
     {
         CartId = cardId;
         ProductItem = productItem;
     }
 
+    public Guid CartId { get; }
+
+    public PricedProductItem ProductItem { get; }
+
     public static RemoveProduct Create(Guid cardId, PricedProductItem productItem)
     {
-        return new(cardId, productItem);
+        return new RemoveProduct(cardId, productItem);
     }
 }
 

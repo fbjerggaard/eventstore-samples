@@ -8,9 +8,8 @@ namespace Core.WebApi.Middlewares.ExceptionHandling;
 
 public class ExceptionHandlingMiddleware
 {
-    private readonly RequestDelegate next;
-
     private readonly ILogger logger;
+    private readonly RequestDelegate next;
 
     public ExceptionHandlingMiddleware(RequestDelegate next,
         ILoggerFactory loggerFactory)

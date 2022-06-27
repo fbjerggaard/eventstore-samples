@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Linq;
 
 namespace Core.Events;
@@ -10,33 +9,43 @@ public class StreamNameMapper
 
     private readonly ConcurrentDictionary<Type, string> typeNameMap = new();
 
-    public static void AddCustomMap<TStream>(string mappedStreamName) =>
+    public static void AddCustomMap<TStream>(string mappedStreamName)
+    {
         AddCustomMap(typeof(TStream), mappedStreamName);
+    }
 
     public static void AddCustomMap(Type streamType, string mappedStreamName)
     {
         Instance.typeNameMap.AddOrUpdate(streamType, mappedStreamName, (_, _) => mappedStreamName);
     }
 
-    public static string ToStreamPrefix<TStream>() => ToStreamPrefix(typeof(TStream));
-
-    public static string ToStreamPrefix(Type streamType) => Instance.typeNameMap.GetOrAdd(streamType, (_) =>
+    public static string ToStreamPrefix<TStream>()
     {
-        var modulePrefix = streamType.Namespace!.Split(".").First();
-        return $"{modulePrefix}_{streamType.Name}";
-    });
+        return ToStreamPrefix(typeof(TStream));
+    }
 
-    public static string ToStreamId<TStream>(object aggregateId, object? tenantId = null) =>
-        ToStreamId(typeof(TStream), aggregateId);
+    public static string ToStreamPrefix(Type streamType)
+    {
+        return Instance.typeNameMap.GetOrAdd(streamType, _ =>
+        {
+            var modulePrefix = streamType.Namespace!.Split(".").First();
+            return $"{modulePrefix}_{streamType.Name}";
+        });
+    }
 
-        // Generates a stream id in the canonical `{category}-{aggregateId}` format
+    public static string ToStreamId<TStream>(object aggregateId, object? tenantId = null)
+    {
+        return ToStreamId(typeof(TStream), aggregateId);
+    }
+
+    // Generates a stream id in the canonical `{category}-{aggregateId}` format
     public static string ToStreamId(Type streamType, object aggregateId, object? tenantId = null)
     {
-            var tenantPrefix = tenantId == null ? $"{tenantId}_"  : "";
-            var category = ToStreamPrefix(streamType);
+        var tenantPrefix = tenantId == null ? $"{tenantId}_" : "";
+        var category = ToStreamPrefix(streamType);
 
-            // (Out-of-the box, the category projection treats anything before a `-` separator as the category name)
-            // For this reason, we place the "{tenantId}_" bit (if present) on the right hand side of the '-'
-            return $"{category}-{tenantPrefix}{aggregateId}";
+        // (Out-of-the box, the category projection treats anything before a `-` separator as the category name)
+        // For this reason, we place the "{tenantId}_" bit (if present) on the right hand side of the '-'
+        return $"{category}-{tenantPrefix}{aggregateId}";
     }
 }

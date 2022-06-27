@@ -19,16 +19,16 @@ internal class CartBuilder
         return this;
     }
 
-    public static CartBuilder Create() => new();
+    public static CartBuilder Create()
+    {
+        return new();
+    }
 
     public Cart Build()
     {
-        var cart = (Cart) Activator.CreateInstance(typeof(Cart), true)!;
+        var cart = (Cart)Activator.CreateInstance(typeof(Cart), true)!;
 
-        foreach (var @event in eventsToApply)
-        {
-            cart.When(@event);
-        }
+        foreach (var @event in eventsToApply) cart.When(@event);
 
         return cart;
     }

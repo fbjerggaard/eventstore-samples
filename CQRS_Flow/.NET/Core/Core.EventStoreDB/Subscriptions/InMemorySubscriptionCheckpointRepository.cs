@@ -10,12 +10,12 @@ public class InMemorySubscriptionCheckpointRepository: ISubscriptionCheckpointRe
 
     public ValueTask<ulong?> Load(string subscriptionId, CancellationToken ct)
     {
-        return new(checkpoints.TryGetValue(subscriptionId, out var checkpoint) ? checkpoint : null);
+        return new ValueTask<ulong?>(checkpoints.TryGetValue(subscriptionId, out var checkpoint) ? checkpoint : null);
     }
 
     public ValueTask Store(string subscriptionId, ulong position, CancellationToken ct)
     {
-        checkpoints.AddOrUpdate(subscriptionId, position,(_, _) => position);
+        checkpoints.AddOrUpdate(subscriptionId, position, (_, _) => position);
 
         return ValueTask.CompletedTask;
     }

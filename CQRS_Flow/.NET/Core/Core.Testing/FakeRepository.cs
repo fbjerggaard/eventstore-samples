@@ -8,14 +8,14 @@ using Core.Repositories;
 
 namespace Core.Testing;
 
-public class FakeRepository<T> : IRepository<T> where T : IAggregate
+public class FakeRepository<T>: IRepository<T> where T : IAggregate
 {
-    public Dictionary<Guid, T> Aggregates { get; private set; }
-
     public FakeRepository(params T[] aggregates)
     {
-        Aggregates = aggregates.ToDictionary(ks=> ks.Id, vs => vs);
+        Aggregates = aggregates.ToDictionary(ks => ks.Id, vs => vs);
     }
+
+    public Dictionary<Guid, T> Aggregates { get; }
 
     public Task<T?> Find(Guid id, CancellationToken cancellationToken)
     {

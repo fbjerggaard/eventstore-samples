@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,10 +7,10 @@ using Carts.Carts.GettingCartById;
 using Carts.Carts.GettingCartHistory;
 using Carts.Carts.GettingCarts;
 using Carts.Carts.Products;
-using Microsoft.AspNetCore.Mvc;
 using Core.Commands;
 using Core.Ids;
 using Core.Queries;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Carts.Api.Controllers;
 
@@ -19,8 +18,8 @@ namespace Carts.Api.Controllers;
 public class CartsController: Controller
 {
     private readonly ICommandBus commandBus;
-    private readonly IQueryBus queryBus;
     private readonly IIdGenerator idGenerator;
+    private readonly IQueryBus queryBus;
 
     public CartsController(
         ICommandBus commandBus,
@@ -72,9 +71,9 @@ public class CartsController: Controller
     [HttpDelete("{id}/products/{productId}")]
     public async Task<IActionResult> RemoveProduct(
         Guid id,
-        [FromRoute]Guid? productId,
-        [FromQuery]int? quantity,
-        [FromQuery]decimal? unitPrice,
+        [FromRoute] Guid? productId,
+        [FromQuery] int? quantity,
+        [FromQuery] decimal? unitPrice,
         CancellationToken ct
     )
     {
@@ -111,7 +110,8 @@ public class CartsController: Controller
     }
 
     [HttpGet]
-    public Task<IReadOnlyList<CartShortInfo>> Get(CancellationToken ct, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
+    public Task<IReadOnlyList<CartShortInfo>> Get(CancellationToken ct, [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 20)
     {
         return queryBus.Send<GetCarts, IReadOnlyList<CartShortInfo>>(GetCarts.Create(pageNumber, pageSize), ct);
     }

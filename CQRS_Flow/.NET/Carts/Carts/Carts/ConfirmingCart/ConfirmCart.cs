@@ -8,12 +8,12 @@ namespace Carts.Carts.ConfirmingCart;
 
 public class ConfirmCart
 {
-    public Guid CartId { get; }
-
     private ConfirmCart(Guid cartId)
     {
         CartId = cartId;
     }
+
+    public Guid CartId { get; }
 
     public static ConfirmCart Create(Guid cartId)
     {

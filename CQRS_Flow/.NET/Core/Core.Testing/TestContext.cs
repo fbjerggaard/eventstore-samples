@@ -15,27 +15,27 @@ public class TestContext<TStartup>: TestContext
         Func<string, Dictionary<string, string>>? getConfiguration = null,
         Action<IServiceCollection>? setupServices = null,
         Func<IWebHostBuilder, IWebHostBuilder>? setupWebHostBuilder = null
-    ): base(getConfiguration, setupServices, (webHostBuilder =>
+    ): base(getConfiguration, setupServices, webHostBuilder =>
     {
         SetupWebHostBuilder(webHostBuilder);
         setupWebHostBuilder?.Invoke(webHostBuilder);
         return webHostBuilder;
-    }))
+    })
     {
     }
 
     private static IWebHostBuilder SetupWebHostBuilder(IWebHostBuilder webHostBuilder)
-        => webHostBuilder.UseStartup<TStartup>();
+    {
+        return webHostBuilder.UseStartup<TStartup>();
+    }
 }
 
 public class TestContext: IDisposable
 {
-    public HttpClient Client { get; }
-
-    private readonly TestServer server;
-
     private readonly Func<string, Dictionary<string, string>> getConfiguration =
         _ => new Dictionary<string, string>();
+
+    private readonly TestServer server;
 
     public TestContext(
         Func<string, Dictionary<string, string>>? getConfiguration = null,
@@ -43,10 +43,7 @@ public class TestContext: IDisposable
         Func<IWebHostBuilder, IWebHostBuilder>? setupWebHostBuilder = null
     )
     {
-        if (getConfiguration != null)
-        {
-            this.getConfiguration = getConfiguration;
-        }
+        if (getConfiguration != null) this.getConfiguration = getConfiguration;
 
         var fixtureName = new StackTrace().GetFrame(3)!.GetMethod()!.DeclaringType!.Name;
 
@@ -61,6 +58,8 @@ public class TestContext: IDisposable
 
         Client = server.CreateClient();
     }
+
+    public HttpClient Client { get; }
 
     public void Dispose()
     {

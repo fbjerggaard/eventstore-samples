@@ -2,6 +2,7 @@ using Carts.Carts;
 using Carts.Carts.GettingCartById;
 using Core.ElasticSearch;
 using Core.EventStoreDB;
+using Core.MongoDB;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,8 +14,9 @@ public static class Config
     {
         services.AddEventStoreDB(config);
         // Document Part used for projections
-        services.AddElasticsearch(config,
-            settings => settings.DefaultMappingFor<CartDetails>(m => m.Ignore(cd => cd.TotalPrice)));
+        services.AddMongoDb(config);
+        // services.AddElasticsearch(config,
+        //     settings => settings.DefaultMappingFor<CartDetails>(m => m.Ignore(cd => cd.TotalPrice)));
         services.AddCarts();
     }
 }

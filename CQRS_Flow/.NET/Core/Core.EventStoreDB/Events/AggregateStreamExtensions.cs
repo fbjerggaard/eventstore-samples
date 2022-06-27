@@ -26,8 +26,8 @@ public static class AggregateStreamExtensions
         );
 
         var readState = await readResult.ReadState;
-            
-        if(readState == ReadState.StreamNotFound)
+
+        if (readState == ReadState.StreamNotFound)
             throw AggregateNotFoundException.For<T>(id);
 
         var aggregate = (T)Activator.CreateInstance(typeof(T), true)!;

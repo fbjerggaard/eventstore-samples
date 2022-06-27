@@ -4,6 +4,12 @@ namespace Carts.Carts.Products;
 
 public class PricedProductItem
 {
+    public PricedProductItem(ProductItem productItem, decimal unitPrice)
+    {
+        ProductItem = productItem;
+        UnitPrice = unitPrice;
+    }
+
     public Guid ProductId => ProductItem.ProductId;
 
     public int Quantity => ProductItem.Quantity;
@@ -12,12 +18,6 @@ public class PricedProductItem
 
     public decimal TotalPrice => Quantity * UnitPrice;
     public ProductItem ProductItem { get; }
-
-    public PricedProductItem(ProductItem productItem, decimal unitPrice)
-    {
-        ProductItem = productItem;
-        UnitPrice = unitPrice;
-    }
 
     public static PricedProductItem Create(Guid? productId, int? quantity, decimal? unitPrice)
     {
@@ -73,7 +73,7 @@ public class PricedProductItem
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        return obj.GetType() == GetType() && Equals((PricedProductItem) obj);
+        return obj.GetType() == GetType() && Equals((PricedProductItem)obj);
     }
 
     private bool Equals(PricedProductItem other)

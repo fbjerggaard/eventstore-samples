@@ -8,19 +8,19 @@ namespace Carts.Carts.InitializingCart;
 
 public class InitializeCart
 {
-    public Guid CartId { get; }
-
-    public Guid ClientId { get; }
-
     private InitializeCart(Guid cartId, Guid clientId)
     {
         CartId = cartId;
         ClientId = clientId;
     }
 
+    public Guid CartId { get; }
+
+    public Guid ClientId { get; }
+
     public static InitializeCart Create(Guid? cartId, Guid? clientId)
     {
-        if (!cartId.HasValue|| cartId == Guid.Empty)
+        if (!cartId.HasValue || cartId == Guid.Empty)
             throw new ArgumentOutOfRangeException(nameof(cartId));
         if (!clientId.HasValue || clientId == Guid.Empty)
             throw new ArgumentOutOfRangeException(nameof(clientId));

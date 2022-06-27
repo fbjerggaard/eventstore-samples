@@ -9,7 +9,8 @@ namespace Core.Testing;
 
 public static class TestWebHostBuilder
 {
-    public static IWebHostBuilder Create(Dictionary<string, string> configuration, Action<IServiceCollection>? configureServices = null)
+    public static IWebHostBuilder Create(Dictionary<string, string> configuration,
+        Action<IServiceCollection>? configureServices = null)
     {
         var projectDir = Directory.GetCurrentDirectory();
         configureServices ??= _ => { };

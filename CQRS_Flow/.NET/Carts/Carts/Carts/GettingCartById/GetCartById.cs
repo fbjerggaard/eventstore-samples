@@ -10,12 +10,12 @@ namespace Carts.Carts.GettingCartById;
 
 public class GetCartById
 {
-    public Guid CartId { get; }
-
     private GetCartById(Guid cartId)
     {
         CartId = cartId;
     }
+
+    public Guid CartId { get; }
 
     public static GetCartById Create(Guid cartId)
     {
@@ -26,7 +26,7 @@ public class GetCartById
     }
 }
 
-internal class HandleGetCartById :
+internal class HandleGetCartById:
     IQueryHandler<GetCartById, CartDetails>
 {
     private readonly IElasticClient elasticClient;

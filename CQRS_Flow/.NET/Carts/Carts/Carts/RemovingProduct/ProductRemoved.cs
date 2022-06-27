@@ -5,15 +5,15 @@ namespace Carts.Carts.RemovingProduct;
 
 public class ProductRemoved
 {
-    public Guid CartId { get; }
-
-    public PricedProductItem ProductItem { get; }
-
     public ProductRemoved(Guid cartId, PricedProductItem productItem)
     {
         CartId = cartId;
         ProductItem = productItem;
     }
+
+    public Guid CartId { get; }
+
+    public PricedProductItem ProductItem { get; }
 
     public static ProductRemoved Create(Guid cartId, PricedProductItem productItem)
     {

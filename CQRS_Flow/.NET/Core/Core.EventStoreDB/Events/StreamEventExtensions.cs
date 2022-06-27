@@ -17,5 +17,4 @@ public static class StreamEventExtensions
         var type = typeof(StreamEvent<>).MakeGenericType(eventData.GetType());
         return (StreamEvent)Activator.CreateInstance(type, eventData, metaData)!;
     }
-
 }

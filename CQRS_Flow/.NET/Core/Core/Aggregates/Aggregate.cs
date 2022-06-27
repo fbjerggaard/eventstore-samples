@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Core.Aggregates;
@@ -9,11 +8,10 @@ public abstract class Aggregate: Aggregate<Guid>, IAggregate
 
 public abstract class Aggregate<T>: IAggregate<T> where T : notnull
 {
+    [NonSerialized] private readonly Queue<object> uncommittedEvents = new();
     public T Id { get; protected set; } = default!;
 
     public int Version { get; protected set; }
-
-    [NonSerialized] private readonly Queue<object> uncommittedEvents = new Queue<object>();
 
     public virtual void When(object @event) { }
 

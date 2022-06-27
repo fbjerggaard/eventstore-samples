@@ -1,4 +1,3 @@
-using System;
 using Core.Projections;
 
 namespace Core.Aggregates;

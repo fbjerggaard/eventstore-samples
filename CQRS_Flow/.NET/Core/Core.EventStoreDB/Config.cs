@@ -1,8 +1,8 @@
 using Core.BackgroundWorkers;
 using Core.EventStoreDB.Subscriptions;
 using EventStore.Client;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Core.EventStoreDB;
@@ -20,7 +20,8 @@ public static class EventStoreDBConfigExtensions
 {
     private const string DefaultConfigKey = "EventStore";
 
-    public static IServiceCollection AddEventStoreDB(this IServiceCollection services, IConfiguration config, EventStoreDBOptions? options = null)
+    public static IServiceCollection AddEventStoreDB(this IServiceCollection services, IConfiguration config,
+        EventStoreDBOptions? options = null)
     {
         var eventStoreDBConfig = config.GetSection(DefaultConfigKey).Get<EventStoreDBConfig>();
 
@@ -29,10 +30,8 @@ public static class EventStoreDBConfigExtensions
             .AddTransient<EventStoreDBSubscriptionToAll, EventStoreDBSubscriptionToAll>();
 
         if (options?.UseInternalCheckpointing != false)
-        {
             services
                 .AddTransient<ISubscriptionCheckpointRepository, EventStoreDBSubscriptionCheckpointRepository>();
-        }
 
         return services;
     }
@@ -42,10 +41,8 @@ public static class EventStoreDBConfigExtensions
         bool checkpointToEventStoreDB = true)
     {
         if (checkpointToEventStoreDB)
-        {
             services
                 .AddTransient<ISubscriptionCheckpointRepository, EventStoreDBSubscriptionCheckpointRepository>();
-        }
 
         return services.AddHostedService(serviceProvider =>
             {

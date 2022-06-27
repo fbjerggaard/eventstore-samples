@@ -9,8 +9,8 @@ namespace Carts.Carts.GettingCartHistory;
 
 public class CartHistory: IProjection
 {
-    public Guid Id { get; set;}
-    public Guid CartId { get; set;}
+    public Guid Id { get; set; }
+    public Guid CartId { get; set; }
     public string Description { get; set; } = default!;
 
     public void When(object @event)

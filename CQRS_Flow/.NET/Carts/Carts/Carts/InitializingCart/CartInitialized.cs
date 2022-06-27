@@ -4,18 +4,18 @@ namespace Carts.Carts.InitializingCart;
 
 public class CartInitialized
 {
-    public Guid CartId { get; }
-
-    public Guid ClientId { get; }
-
-    public CartStatus CartStatus { get; }
-
     public CartInitialized(Guid cartId, Guid clientId, CartStatus cartStatus)
     {
         CartId = cartId;
         ClientId = clientId;
         CartStatus = cartStatus;
     }
+
+    public Guid CartId { get; }
+
+    public Guid ClientId { get; }
+
+    public CartStatus CartStatus { get; }
 
     public static CartInitialized Create(Guid cartId, Guid clientId, CartStatus cartStatus)
     {

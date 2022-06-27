@@ -13,13 +13,12 @@ namespace Carts.Api.Tests.Carts.Confirming;
 
 public class ConfirmShoppingCartFixture: ApiFixture<Startup>
 {
-    protected override string ApiUrl => "/api/Carts";
-
-    public Guid CartId { get; private set; }
-
     public readonly Guid ClientId = Guid.NewGuid();
 
     public HttpResponseMessage CommandResponse = default!;
+    protected override string ApiUrl => "/api/Carts";
+
+    public Guid CartId { get; private set; }
 
     public override async Task InitializeAsync()
     {

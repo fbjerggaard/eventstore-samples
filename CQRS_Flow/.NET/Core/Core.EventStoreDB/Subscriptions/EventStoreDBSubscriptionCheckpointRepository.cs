@@ -26,10 +26,7 @@ public class EventStoreDBSubscriptionCheckpointRepository: ISubscriptionCheckpoi
         var result = eventStoreClient.ReadStreamAsync(Direction.Backwards, streamName, StreamPosition.End, 1,
             cancellationToken: ct);
 
-        if (await result.ReadState == ReadState.StreamNotFound)
-        {
-            return null;
-        }
+        if (await result.ReadState == ReadState.StreamNotFound) return null;
 
         ResolvedEvent? @event = await result.FirstOrDefaultAsync(ct);
 
@@ -74,5 +71,8 @@ public class EventStoreDBSubscriptionCheckpointRepository: ISubscriptionCheckpoi
         }
     }
 
-    private static string GetCheckpointStreamName(string subscriptionId) => $"checkpoint_{subscriptionId}";
+    private static string GetCheckpointStreamName(string subscriptionId)
+    {
+        return $"checkpoint_{subscriptionId}";
+    }
 }

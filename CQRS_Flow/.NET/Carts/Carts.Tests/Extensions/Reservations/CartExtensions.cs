@@ -13,7 +13,6 @@ internal static class CartExtensions
         Guid id,
         Guid clientId)
     {
-
         cart.Id.Should().Be(id);
         cart.ClientId.Should().Be(clientId);
         cart.Status.Should().Be(CartStatus.Pending);

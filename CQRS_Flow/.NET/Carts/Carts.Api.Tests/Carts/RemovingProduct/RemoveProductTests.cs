@@ -14,10 +14,6 @@ namespace Carts.Api.Tests.Carts.RemovingProduct;
 
 public class RemoveProductFixture: ApiFixture<Startup>
 {
-    protected override string ApiUrl => "/api/Carts";
-
-    public Guid ShoppingCartId { get; private set; }
-
     public readonly Guid ClientId = Guid.NewGuid();
 
     public readonly ProductItemRequest ProductItem = new(Guid.NewGuid(), 10);
@@ -25,6 +21,9 @@ public class RemoveProductFixture: ApiFixture<Startup>
     public readonly int RemovedCount = 5;
 
     public HttpResponseMessage CommandResponse = default!;
+    protected override string ApiUrl => "/api/Carts";
+
+    public Guid ShoppingCartId { get; private set; }
 
     public override async Task InitializeAsync()
     {

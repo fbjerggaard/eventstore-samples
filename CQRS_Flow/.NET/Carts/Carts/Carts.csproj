@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Core\Core.ElasticSearch\Core.ElasticSearch.csproj" />
+        <ProjectReference Include="..\..\Core\Core.MongoDB\Core.MongoDB.csproj" />
         <ProjectReference Include="..\..\Core\Core\Core.csproj" />
         <ProjectReference Include="..\..\Core\Core.EventStoreDB\Core.EventStoreDB.csproj" />
     </ItemGroup>

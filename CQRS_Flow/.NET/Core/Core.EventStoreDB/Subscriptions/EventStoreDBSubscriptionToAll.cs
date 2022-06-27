@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.Events;
 using Core.EventStoreDB.Events;
-using Core.EventStoreDB.Serialization;
 using Core.Threading;
 using EventStore.Client;
 using Microsoft.Extensions.Logging;
@@ -25,14 +24,13 @@ public class EventStoreDBSubscriptionToAllOptions
 
 public class EventStoreDBSubscriptionToAll
 {
+    private readonly ISubscriptionCheckpointRepository checkpointRepository;
     private readonly IEventBus eventBus;
     private readonly EventStoreClient eventStoreClient;
-    private readonly ISubscriptionCheckpointRepository checkpointRepository;
     private readonly ILogger<EventStoreDBSubscriptionToAll> logger;
-    private EventStoreDBSubscriptionToAllOptions subscriptionOptions = default!;
-    private string SubscriptionId => subscriptionOptions.SubscriptionId;
     private readonly object resubscribeLock = new();
     private CancellationToken cancellationToken;
+    private EventStoreDBSubscriptionToAllOptions subscriptionOptions = default!;
 
     public EventStoreDBSubscriptionToAll(
         EventStoreClient eventStoreClient,
@@ -48,6 +46,8 @@ public class EventStoreDBSubscriptionToAll
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
+    private string SubscriptionId => subscriptionOptions.SubscriptionId;
+
     public async Task SubscribeToAll(EventStoreDBSubscriptionToAllOptions subscriptionOptions, CancellationToken ct)
     {
         this.subscriptionOptions = subscriptionOptions;
@@ -58,7 +58,6 @@ public class EventStoreDBSubscriptionToAll
         var checkpoint = await checkpointRepository.Load(SubscriptionId, ct);
 
         if (checkpoint != null)
-        {
             await eventStoreClient.SubscribeToAllAsync(
                 new Position(checkpoint.Value, checkpoint.Value),
                 HandleEvent,
@@ -69,9 +68,7 @@ public class EventStoreDBSubscriptionToAll
                 subscriptionOptions.Credentials,
                 ct
             );
-        }
         else
-        {
             await eventStoreClient.SubscribeToAllAsync(
                 HandleEvent,
                 false,
@@ -81,7 +78,6 @@ public class EventStoreDBSubscriptionToAll
                 subscriptionOptions.Credentials,
                 ct
             );
-        }
 
         logger.LogInformation("Subscription to all '{SubscriptionId}' started", SubscriptionId);
     }

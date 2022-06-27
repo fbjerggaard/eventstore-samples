@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace Core.Threading;
+﻿namespace Core.Threading;
 
 public static class NoSynchronizationContextScope
 {
@@ -21,7 +18,9 @@ public static class NoSynchronizationContextScope
             this.synchronizationContext = synchronizationContext;
         }
 
-        public void Dispose() =>
+        public void Dispose()
+        {
             SynchronizationContext.SetSynchronizationContext(synchronizationContext);
+        }
     }
 }
